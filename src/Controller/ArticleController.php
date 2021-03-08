@@ -4,10 +4,11 @@
 namespace App\Controller;
 
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArticleController
+class ArticleController extends AbstractController
 {
     /**
      * @Route("/")
@@ -20,10 +21,17 @@ class ArticleController
      * @Route("/news/{slug}")
      */
     public  function  show($slug){
-        return new Response(sprintf(
-            'Future page to show one space article: %s',
-            $slug
-        ));
+
+        $comments =[
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+        'In aliquet risus auctor, convallis turpis sed, volutpat sapien',
+        'Quisque quis justo nec urna auctor molestie sed non mauris'
+        ];
+        return $this->render('article/show.html.twig', [
+            'title' => $slug,
+                'comments' =>$comments
+        ]
+       );
     }
 
 }
