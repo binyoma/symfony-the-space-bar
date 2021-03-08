@@ -27,6 +27,7 @@ class ArticleController extends AbstractController
         'In aliquet risus auctor, convallis turpis sed, volutpat sapien',
         'Quisque quis justo nec urna auctor molestie sed non mauris'
         ];
+        dump($slug, $this);
         return $this->render('article/show.html.twig', [
             'title' => $slug,
                 'comments' =>$comments
