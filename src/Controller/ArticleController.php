@@ -31,16 +31,17 @@ class ArticleController extends AbstractController
      */
     public function homepage(ArticleRepository $repository)
     {
-        $articles=$repository->findAllPublishedOrderedByNewest();
+        $articles = $repository->findAllPublishedOrderedByNewest();
+
         return $this->render('article/homepage.html.twig', [
-            'articles'=>$articles
+            'articles' => $articles,
         ]);
     }
 
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show(Article $article, SlackClient $slack )
+    public function show(Article $article, SlackClient $slack)
     {
         if ($article->getSlug() === 'khaaaaaan') {
             $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
@@ -52,12 +53,9 @@ class ArticleController extends AbstractController
             'I like bacon too! Buy some from my site! bakinsomebacon.com',
         ];
 
-
-
         return $this->render('article/show.html.twig', [
-           'article'=>$article,
+            'article' => $article,
             'comments' => $comments,
-
         ]);
     }
 

@@ -8,10 +8,10 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class MarkdownHelper
 {
-    public $cache;
-    public $markdown;
-    public $logger;
-    public $isDebug;
+    private $cache;
+    private $markdown;
+    private $logger;
+    private $isDebug;
 
     public function __construct(AdapterInterface $cache, MarkdownInterface $markdown, LoggerInterface $markdownLogger, bool $isDebug)
     {

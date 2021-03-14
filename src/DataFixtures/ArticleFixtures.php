@@ -7,28 +7,28 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ArticleFixtures extends BaseFixture
 {
-    private static $articlesTitles=[
+    private static $articleTitles = [
         'Why Asteroids Taste Like Bacon',
         'Life on Planet Mercury: Tan, Relaxing and Fabulous',
         'Light Speed Travel: Fountain of Youth or Fallacy',
     ];
 
-    private static $articlesImages=[
+    private static $articleImages = [
         'asteroid.jpeg',
         'mercury.jpeg',
         'lightspeed.png',
     ];
-    private static $articlesAuthors=[
+
+    private static $articleAuthors = [
         'Mike Ferengi',
         'Amy Oort',
     ];
-    protected function loadData(ObjectManager $manager)
+
+    public function loadData(ObjectManager $manager)
     {
-
-        $this->createMany(Article::class, 10, function (Article $article, $count ){
-
-        $article->setTitle($this->faker->randomElement(self::$articlesTitles))
-            ->setContent(<<<EOF
+        $this->createMany(Article::class, 10, function(Article $article, $count) {
+            $article->setTitle($this->faker->randomElement(self::$articleTitles))
+                ->setContent(<<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
 lorem proident [beef ribs](https://baconipsum.com/) aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit
 labore minim pork belly spare ribs cupim short loin in. Elit exercitation eiusmod dolore cow
@@ -46,17 +46,19 @@ strip steak pork belly aliquip capicola officia. Labore deserunt esse chicken lo
 cow est ribeye adipisicing. Pig hamburger pork belly enim. Do porchetta minim capicola irure pancetta chuck
 fugiat.
 EOF
-            )
-        ;
+            );
 
-        if ($this->faker->boolean(70)){
-            $article->setPublishedAt($this->faker->dateTimeBetween('-100 days, -1 days'));
-        }
-        $article->setAuthor($this->faker->randomElement(self::$articlesAuthors))
-            ->setHeartCount($this ->faker->numberBetween(5,100))
-            ->setImageFilename($this->faker->randomElement(self::$articlesImages));
+            // publish most articles
+            if ($this->faker->boolean(70)) {
+                $article->setPublishedAt($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            }
 
+            $article->setAuthor($this->faker->randomElement(self::$articleAuthors))
+                ->setHeartCount($this->faker->numberBetween(5, 100))
+                ->setImageFilename($this->faker->randomElement(self::$articleImages))
+            ;
         });
+
         $manager->flush();
     }
 }

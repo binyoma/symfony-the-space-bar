@@ -12,6 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Article
 {
     use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,8 +26,8 @@ class Article
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=100 , unique=true)
-     * @Gedmo\Slug (fields={"title"})
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
 
@@ -71,6 +72,7 @@ class Article
 
         return $this;
     }
+
 
     public function getSlug(): ?string
     {
@@ -132,6 +134,13 @@ class Article
         return $this;
     }
 
+    public function incrementHeartCount(): self
+    {
+        $this->heartCount = $this->heartCount + 1;
+
+        return $this;
+    }
+
     public function getImageFilename(): ?string
     {
         return $this->imageFilename;
@@ -146,14 +155,6 @@ class Article
 
     public function getImagePath()
     {
-        return'images/'.$this->getImageFilename();
+        return 'images/'.$this->getImageFilename();
     }
-
-    public function incrementHeartCount():self
-    {
-        $this->heartCount=$this->heartCount+1;
-        return $this;
-
-    }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Article;
@@ -14,12 +15,12 @@ class ArticleAdminController extends AbstractController
      */
     public function new(EntityManagerInterface $em)
     {
-       die('todo');
+        die('todo');
+
         return new Response(sprintf(
-            'Hiya! New article id: #%d slug: %s',
+            'Hiya! New Article id: #%d slug: %s',
             $article->getId(),
             $article->getSlug()
         ));
-
     }
 }
