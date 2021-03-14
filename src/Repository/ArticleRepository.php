@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,24 +23,17 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * @return Article[]
      */
+
     public function findAllPublishedOrderedByNewest()
     {
+
         return $this->addIsPublishedQueryBuilder()
-            ->leftJoin('a.tags', 't')
-            ->addSelect('t')
-            ->orderBy('a.publishedAt', 'DESC')
+            ->orderBy('a.publishedAt','DESC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public static function createNonDeletedCriteria(): Criteria
-    {
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->eq('isDeleted', false))
-            ->orderBy(['createdAt' => 'DESC'])
-        ;
-    }
 
     /*
     public function findOneBySomeField($value): ?Article
@@ -59,6 +51,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->getOrCreateQueryBuilder($qb)
             ->andWhere('a.publishedAt IS NOT NULL');
+
     }
 
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)

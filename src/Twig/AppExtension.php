@@ -4,13 +4,14 @@ namespace App\Twig;
 
 use App\Service\MarkdownHelper;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
+
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -25,6 +26,8 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         ];
     }
 
+
+
     public function processMarkdown($value)
     {
         return $this->container
@@ -35,7 +38,10 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
     public static function getSubscribedServices()
     {
         return [
-            MarkdownHelper::class,
+            MarkdownHelper::class
+
         ];
     }
+
+
 }
