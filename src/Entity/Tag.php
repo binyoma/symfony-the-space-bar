@@ -14,6 +14,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Tag
 {
     use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -27,9 +28,8 @@ class Tag
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255 , unique=true)
+     * @ORM\Column(type="string", length=180, unique=true)
      * @Gedmo\Slug(fields={"name"})
-     * @Gedmo\Slug()
      */
     private $slug;
 

@@ -62,7 +62,7 @@ class Article
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"createdAt"="DESC"})
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 
@@ -193,6 +193,7 @@ class Article
     public function getNonDeletedComments(): Collection
     {
         $criteria = ArticleRepository::createNonDeletedCriteria();
+
         return $this->comments->matching($criteria);
     }
 
