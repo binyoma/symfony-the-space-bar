@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Manage Account!{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
 
@@ -21,7 +22,7 @@
                         <div class="user-pad">
                             <h3>Welcome back, {{ app.user.firstName }}</h3>
                             {% if app.user.twitterUsername %}
-                            <h4 class="white"><i class="fa fa-twitter"></i> {{ app.user.twitterUsername }}</h4>
+                                <h4 class="white"><i class="fa fa-twitter"></i> {{ app.user.twitterUsername }}</h4>
                             {% endif %}
                             <a class="btn btn-labeled btn-info" href="#">
                                 <span class="btn-label"><i class="fa fa-pencil"></i></span>Update

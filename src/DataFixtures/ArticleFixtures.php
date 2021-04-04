@@ -22,7 +22,6 @@ class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
         'lightspeed.png',
     ];
 
-
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(10, 'main_articles', function($count) use ($manager) {
@@ -72,8 +71,8 @@ EOF
     public function getDependencies()
     {
         return [
-            UserFixture::class,
             TagFixture::class,
+            UserFixture::class,
         ];
     }
 }

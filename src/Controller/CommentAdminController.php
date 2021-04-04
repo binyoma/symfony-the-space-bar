@@ -16,11 +16,9 @@ class CommentAdminController extends Controller
 {
     /**
      * @Route("/admin/comment", name="comment_admin")
-     *
      */
     public function index(CommentRepository $repository, Request $request, PaginatorInterface $paginator)
     {
-
         $q = $request->query->get('q');
 
         $queryBuilder = $repository->getWithSearchQueryBuilder($q);

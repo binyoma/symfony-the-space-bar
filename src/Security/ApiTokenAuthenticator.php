@@ -14,41 +14,46 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
+    private $apiTokenRepo;
 
-    private $apiTokenRepository;
-
-    public function __construct(ApiTokenRepository $apiTokenRepository)
+    public function __construct(ApiTokenRepository $apiTokenRepo)
     {
-        $this->apiTokenRepository = $apiTokenRepository;
+        $this->apiTokenRepo = $apiTokenRepo;
     }
 
     public function supports(Request $request)
     {
+        // look for header "Authorization: Bearer <token>"
         return $request->headers->has('Authorization')
             && 0 === strpos($request->headers->get('Authorization'), 'Bearer ');
     }
 
     public function getCredentials(Request $request)
     {
-        $authorizationHeader=$request->headers->get('Authorization');
+        $authorizationHeader = $request->headers->get('Authorization');
 
-        //skip beyond "Bearer"
-        return substr($authorizationHeader , 7);
-
-
+        // skip beyond "Bearer "
+        return substr($authorizationHeader, 7);
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $token=$this->apiTokenRepository->findOneBy([
-            'token'=>$credentials
+        $token = $this->apiTokenRepo->findOneBy([
+            'token' => $credentials
         ]);
-        if (!$token){
-            throw new CustomUserMessageAuthenticationException('Invalid API Token');
+
+        if (!$token) {
+            throw new CustomUserMessageAuthenticationException(
+                'Invalid API Token'
+            );
         }
-        if ($token->isExpired()){
-            throw new CustomUserMessageAuthenticationException('Token expired');
+
+        if ($token->isExpired()) {
+            throw new CustomUserMessageAuthenticationException(
+                'Token expired'
+            );
         }
+
         return $token->getUser();
     }
 
@@ -60,7 +65,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return new JsonResponse([
-            'message'=>$exception->getMessageKey()
+            'message' => $exception->getMessageKey()
         ], 401);
     }
 
@@ -71,7 +76,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        throw new \Exception('Not used: entry_point from authenticator is used');
+        throw new \Exception('Not used: entry_point from other authentication is used');
     }
 
     public function supportsRememberMe()

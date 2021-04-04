@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -26,6 +28,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Get creative and think of a title!")
      */
     private $title;
 
@@ -67,10 +70,21 @@ class Article
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Please set an author")
      */
     private $author;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $specificLocationName;
 
     public function __construct()
     {
@@ -132,6 +146,10 @@ class Article
         return $this;
     }
 
+    public function isPublished(): bool
+    {
+        return $this->publishedAt !== null ;
+    }
 
     public function getHeartCount(): ?int
     {
@@ -244,6 +262,41 @@ class Article
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (stripos($this->getTitle(), 'the borg') !==false){
+            $context->buildViolation('Un.. the Bork kinda make us nervous')
+            ->atPath('title')
+            ->addViolation();
+        }
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getSpecificLocationName(): ?string
+    {
+        return $this->specificLocationName;
+    }
+
+    public function setSpecificLocationName(?string $specificLocationName): self
+    {
+        $this->specificLocationName = $specificLocationName;
 
         return $this;
     }
